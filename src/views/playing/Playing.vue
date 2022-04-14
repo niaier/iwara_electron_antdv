@@ -5,6 +5,7 @@
 
 <script>
 //import x from ''
+
 export default {
 	name: '',
 	components: {
@@ -12,7 +13,7 @@ export default {
 	},
 	data () {
 		return {
-
+			info: ''
 		};
 	},
 	computed: {
