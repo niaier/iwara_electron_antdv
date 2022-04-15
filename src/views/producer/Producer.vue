@@ -138,6 +138,9 @@ export default {
 	computed: {
 
 	},
+	created () {
+		this.getSinglePageData()
+	},
 	methods: {
 		showPlaying (item) {
 			this.$refs['Playing'].show(item)

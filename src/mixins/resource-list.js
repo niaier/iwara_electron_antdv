@@ -20,9 +20,7 @@ let resourceMixin = {
       direction: 'reverse',
     }
   },
-  created () {
-    this.getSinglePageData()
-  },
+
   mounted () { },
   methods: {
     pageChange (page) {

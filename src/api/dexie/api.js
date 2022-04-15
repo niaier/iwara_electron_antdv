@@ -5,7 +5,7 @@ class Database extends Dexie {
     this.version('1.0').stores({
       iwara_info: '++id,dirname,play_url,title,producer,categories,upload_time,love,views,description,is_down',
       iwara_user: '++id,&username,password',
-      iwara_love: '++id,&iwara_info_id,love_level,user_id',
+      iwara_love: '++id,iwara_info_id,love_level,user_id',
       iwara_collection_list: '++id,name,iwara_user_id',
       iwara_collection_list_item: '++id,iwara_info_id,iwara_collection_list_id,iwara_user_id',
     });
@@ -72,7 +72,18 @@ class Database extends Dexie {
   }
   //添加到喜爱
   async addToLove (data) {
-    this.iwara_love.put(data)
+    const { iwara_info_id, user_id, love_level } = data
+    const i = await this.iwara_love.filter(item => {
+      const flag1 = item.iwara_info_id == iwara_info_id
+      const flag2 = item.user_id == user_id
+      return flag1 && flag2
+    }).toArray()
+    if (i.length == 1) {
+      let params = { user_id, iwara_info_id, love_level, id: i[0].id }
+      return await this.iwara_love.put(params)
+    } else {
+      return await this.iwara_love.add(data)
+    }
   }
   // 获取喜爱状态
   async getLoveStatus (data) {
@@ -129,6 +140,81 @@ class Database extends Dexie {
     const total = await this.iwara_info.where('producer').equals(producer).count()
     const list = await this.iwara_info.where('producer').equals(producer).offset((page - 1) * pageSize).limit(pageSize).reverse().toArray()
     return { total, list }
+  }
+
+  //获取喜爱的列表数据
+  async getLoveSinglePageData (data) {
+    const { love_level, user_id, page, pageSize } = data
+    const loveList = await this.iwara_love.filter(item => {
+      const loveLevelFlag = item.love_level == love_level
+      const userIddFlag = item.user_id == user_id
+      return loveLevelFlag && userIddFlag
+    }).toArray()
+
+    const list =
+      await this.iwara_info.filter(item => {
+        let flag = false;
+        loveList.forEach(item2 => {
+          if (item2.iwara_info_id == item.id) {
+            flag = true
+          }
+        })
+        return flag
+
+      }).reverse().offset((page - 1) * pageSize).limit(pageSize).toArray()
+
+    let total = await this.iwara_info.filter(item => {
+      let flag = false;
+      loveList.forEach(item2 => {
+        if (item2.iwara_info_id == item.id) {
+          flag = true
+        }
+      })
+      return flag
+    }).count()
+    return { list, total }
+  }
+
+  //获得收藏列表数据
+  async getCollectionListSinglePage (data) {
+    const { iwara_collection_list_id, iwara_user_id, page, pageSize } = data
+    console.log(iwara_collection_list_id, iwara_user_id, page, pageSize);
+    const collectionList = await this.iwara_collection_list_item.filter(item => {
+      const collectionFlag = item.iwara_collection_list_id == iwara_collection_list_id
+      const userIddFlag = item.iwara_user_id == iwara_user_id
+      return collectionFlag && userIddFlag
+    }).toArray()
+    console.log(collectionList);
+    const list =
+      await this.iwara_info.filter(item => {
+        let flag = false;
+        collectionList.forEach(item2 => {
+          if (item2.iwara_info_id == item.id) {
+            flag = true
+          }
+        })
+        return flag
+
+      }).reverse().offset((page - 1) * pageSize).limit(pageSize).toArray()
+
+    let total = await this.iwara_info.filter(item => {
+      let flag = false;
+      collectionList.forEach(item2 => {
+        if (item2.iwara_info_id == item.id) {
+          flag = true
+        }
+      })
+      return flag
+    }).count()
+    console.log(list);
+    return { list, total }
+  }
+
+  //删除收藏列表
+  async deleteCollectionList (data) {
+    const { id } = data
+    await this.iwara_collection_list.where('id').equals(id).delete()
+    await this.iwara_collection_list_item.where('iwara_collection_list_id').equals(id).delete()
   }
 
 

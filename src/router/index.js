@@ -20,9 +20,14 @@ const routes = [
     component: () => import(/* webpackChunkName: "resource" */ '@/views/resource/Resource.vue')
   },
   {
-    path: '/Playing',
-    name: 'Playing',
-    component: () => import(/* webpackChunkName: "playing" */ '@/views/playing/Playing.vue')
+    path: '/Love',
+    name: 'Love',
+    component: () => import(/* webpackChunkName: "love" */ '@/views/love/Love.vue')
+  },
+  {
+    path: '/Collection',
+    name: 'Collection',
+    component: () => import(/* webpackChunkName: "collection" */ '@/views/collection/Collection.vue')
   },
   {
     path: '/Producer',

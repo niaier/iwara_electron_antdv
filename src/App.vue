@@ -42,8 +42,9 @@ export default {
 			menulist: [
 				{ name: '首页', path: '/Home', icon: 'user' },
 				{ name: '资源', path: '/Resource', icon: 'video-camera' },
+				{ name: '喜爱', path: '/Love', icon: 'heart' },
+				{ name: '收藏', path: '/Collection', icon: 'star' },
 				{ name: '测试', path: '/Test', icon: 'upload' },
-				{ name: '播放中', path: '/Playing', icon: 'upload' },
 			]
 		};
 	},

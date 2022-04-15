@@ -78,7 +78,6 @@ export default {
 		async addToLove (love_level) {
 			const { id } = this.info
 			const data = {
-				id: this.iwara_love_id,
 				iwara_info_id: id,
 				love_level,
 				user_id: 1

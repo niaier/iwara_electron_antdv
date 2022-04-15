@@ -76,9 +76,7 @@ export default {
 		};
 	},
 	computed: {
-		tagList () {
-			return this.info.categories.split(',')
-		}
+
 	},
 	methods: {
 		show (iwara_info_id, iwara_user_id) {

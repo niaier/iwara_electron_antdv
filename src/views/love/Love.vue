@@ -1,22 +1,30 @@
 <!-- 组件说明 -->
 <template>
-	<div class="resource">
-		<!-- 搜索栏 START -->
+	<div class="love-page">
+		<!-- 按钮部分 START -->
 		<a-row type="flex" justify="center">
-			<a-col :span="14">
-				<a-input-search
-					placeholder="请输入搜索关键字"
-					enter-button
-					v-model="searchKeyword"
-					@search="onSearch"
-				/>
+			<a-col :span="16">
+				<a-row :gutter="[10, 10]" type="flex" justify="center">
+					<a-col
+						:span="8"
+						v-for="count of 9"
+						:key="count"
+						:style="{
+							'text-align': 'center',
+						}"
+						><a-button
+							shape="round"
+							class="love-level-button"
+							@click="getSinglePageData(count)"
+							>LOVER LEVEL{{ count }}</a-button
+						>
+					</a-col>
+				</a-row>
 			</a-col>
 		</a-row>
-		<!-- 搜索栏 END -->
+		<!-- 按钮部分 END -->
 
-		<!-- 筛选器 START -->
-
-		<!-- 筛选器 END -->
+		<!-- 播放列表部分 START -->
 		<!-- 分页器 START -->
 		<a-row class="mt-20" type="flex" justify="center">
 			<a-col>
@@ -100,6 +108,7 @@
 			</a-col>
 		</a-row>
 		<!-- 分页器 END -->
+		<!-- 播放列表部分 END -->
 		<!-- 视频播放模态框 START -->
 		<Playing ref="Playing"></Playing>
 		<!-- 视频播放模态框 END -->
@@ -109,8 +118,8 @@
 <script>
 //import x from ''
 import db from '@/api/dexie/api.js'
-import resourceMixin from '@/mixins/resource-list';
 import Playing from '@/views/resource/components/Playing.vue'
+import resourceMixin from '@/mixins/resource-list';
 
 export default {
 	name: '',
@@ -118,9 +127,10 @@ export default {
 		Playing
 	},
 	mixins: [resourceMixin],
+
 	data () {
 		return {
-			searchKeyword: "",
+			selectedLoveLevel: null
 		};
 	},
 	computed: {
@@ -130,25 +140,21 @@ export default {
 		this.getSinglePageData()
 	},
 	methods: {
-		onSearch () {
-			console.log(this.searchKeyword);
-			this.getSinglePageData(this.searchKeyword)
-		},
-
-		showPlaying (item) {
-			this.$refs['Playing'].show(item)
-		},
-		async getSinglePageData (searchKeyword) {
-			const orderBy = this.orderBy
+		async getSinglePageData (love_level) {
 			const page = this.pagination.current
 			const pageSize = this.pagination.pageSize
-			const direction = this.direction
+			const user_id = 1
 			const data = {
-				orderBy, page, pageSize, direction, searchKeyword
+				page, pageSize, user_id, love_level
 			}
-			const result = await db.getSinglePageData(data)
+			const result = await db.getLoveSinglePageData(data)
+			console.log(data);
+			console.log(result);
 			this.datalist = result.list
 			this.pagination.total = result.total
+		},
+		showPlaying (item) {
+			this.$refs['Playing'].show(item)
 		},
 	},
 }
@@ -156,4 +162,12 @@ export default {
 
 <style lang='scss' scoped>
 //@import url()
+
+::v-deep.ant-btn:hover,
+::v-deep.ant-btn:focus {
+	color: #fda6b5;
+	background-color: #fff;
+	border-color: #fda6b5;
+	font-weight: 600;
+}
 </style>
