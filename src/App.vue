@@ -44,6 +44,7 @@ export default {
 				{ name: '资源', path: '/Resource', icon: 'video-camera' },
 				{ name: '喜爱', path: '/Love', icon: 'heart' },
 				{ name: '收藏', path: '/Collection', icon: 'star' },
+				{ name: '设置', path: '/Settings', icon: 'setting' },
 				{ name: '测试', path: '/Test', icon: 'upload' },
 			]
 		};

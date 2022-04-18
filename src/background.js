@@ -1,6 +1,7 @@
-'use strict'
+// 'use strict'
 
-import { app, protocol, BrowserWindow } from 'electron'
+import { app, protocol, BrowserWindow, ipcMain } from 'electron'
+import { mysqlQuery } from '/src/utils/mysql/mysql-query'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
@@ -65,6 +66,17 @@ app.on('ready', async () => {
     }
   }
   createWindow()
+  ipcMain.on('syncMysqlData', async function (ev, data) {
+
+    // 发送消息给渲染进程
+    const config = data
+    const sql = 'select * from iwara_info where is_down=1'
+    mysqlQuery
+    const result = await mysqlQuery(config, sql)
+    ev.sender.send('syncMysqlDataRe', result)
+
+  })
+
 })
 
 // Exit cleanly on request from parent process in development mode.
@@ -81,3 +93,6 @@ if (isDevelopment) {
     })
   }
 }
+
+
+
