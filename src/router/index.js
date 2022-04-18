@@ -34,6 +34,11 @@ const routes = [
     name: 'Producer',
     component: () => import(/* webpackChunkName: "producer" */ '@/views/producer/Producer.vue')
   },
+  {
+    path: '/Settings',
+    name: 'settings',
+    component: () => import(/* webpackChunkName: "settings" */ '@/views/settings/Settings.vue')
+  },
 
   // {
   //   path: '/about',

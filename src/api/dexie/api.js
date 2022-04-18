@@ -216,6 +216,39 @@ class Database extends Dexie {
     await this.iwara_collection_list.where('id').equals(id).delete()
     await this.iwara_collection_list_item.where('iwara_collection_list_id').equals(id).delete()
   }
+  // 获取导出的Json数据
+  async getJsonData () {
+    const iwara_info = await this.iwara_info.toArray()
+    const iwara_user = await this.iwara_user.toArray()
+    const iwara_love = await this.iwara_love.toArray()
+    const iwara_collection_list = await this.iwara_collection_list.toArray()
+    const iwara_collection_list_item = await this.iwara_collection_list_item.toArray()
+    const data = {
+      iwara_info,
+      iwara_user,
+      iwara_love,
+      iwara_collection_list,
+      iwara_collection_list_item
+    }
+    return data
+
+  }
+  //导入Json数据
+  async importJsonData (data) {
+    console.log('datadatadatadatadata', data);
+    const {
+      iwara_info,
+      iwara_love,
+      iwara_user,
+      iwara_collection_list,
+      iwara_collection_list_item
+    } = data
+    await this.iwara_info.put(iwara_info)
+    await this.iwara_user.put(iwara_user)
+    await this.iwara_love.put(iwara_love)
+    await this.iwara_collection_list.put(iwara_collection_list)
+    await this.iwara_collection_list_item.put(iwara_collection_list_item)
+  }
 
 
 
