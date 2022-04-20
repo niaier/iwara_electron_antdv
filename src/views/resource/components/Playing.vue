@@ -53,8 +53,12 @@
 											'font-size': '30px',
 										}"
 									>
+										<a-col
+											:span="6"
+											v-if="!user_id"
+										></a-col>
 										<!-- 喜爱 -->
-										<a-col :span="3">
+										<a-col :span="3" v-if="user_id">
 											<a-icon
 												type="heart"
 												:style="{
@@ -64,7 +68,7 @@
 											/>
 										</a-col>
 										<!-- 收藏 -->
-										<a-col :span="3">
+										<a-col :span="3" v-if="user_id">
 											<a-icon
 												type="star"
 												:style="{
@@ -228,7 +232,7 @@ export default {
 			},
 			love_level: 0,
 			iwara_love_id: 0,
-			user_id: 1,
+			user_id: this.$ls.get('user_info') ? this.$ls.get('user_info').id : '',
 			isPageFullscreen: false,
 			curVideoProducerProductionList: []
 		};
@@ -267,7 +271,7 @@ export default {
 		},
 
 		async getLoveStatus () {
-			const user_id = 1
+			const user_id = this.user_id
 			const iwara_info_id = this.info.id
 			const data = { user_id, iwara_info_id }
 			const result = await db.getLoveStatus(data)

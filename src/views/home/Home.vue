@@ -1,7 +1,7 @@
 <!-- 组件说明 -->
 <template>
 	<div class="">
-		<a-button type="primary" @click="syncData">同步数据</a-button>
+		<h1>Welcome !</h1>
 	</div>
 </template>
 

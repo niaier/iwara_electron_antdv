@@ -53,7 +53,7 @@ export default {
 			visible: false,
 			info: {},
 			love_level: 0,
-			user_id: 1,
+			user_id: this.$ls.get('user_info') ? this.$ls.get('user_info').id : '',
 			iwara_love_id: 0
 		};
 	},
@@ -80,7 +80,7 @@ export default {
 			const data = {
 				iwara_info_id: id,
 				love_level,
-				user_id: 1
+				user_id: this.user_id
 			}
 			await db.addToLove(data)
 			this.updateLove()
