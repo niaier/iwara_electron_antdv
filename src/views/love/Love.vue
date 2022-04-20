@@ -1,6 +1,6 @@
 <!-- 组件说明 -->
 <template>
-	<div class="love-page">
+	<div class="love-page" v-if="!!iwara_user_id">
 		<!-- 按钮部分 START -->
 		<a-row type="flex" justify="center">
 			<a-col :span="16">
@@ -130,6 +130,7 @@ export default {
 
 	data () {
 		return {
+			iwara_user_id: this.$ls.get('user_info') ? this.$ls.get('user_info').id : '',
 			selectedLoveLevel: null
 		};
 	},
@@ -143,7 +144,7 @@ export default {
 		async getSinglePageData (love_level) {
 			const page = this.pagination.current
 			const pageSize = this.pagination.pageSize
-			const user_id = 1
+			const user_id = this.iwara_user_id
 			const data = {
 				page, pageSize, user_id, love_level
 			}

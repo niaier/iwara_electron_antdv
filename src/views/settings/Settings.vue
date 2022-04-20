@@ -80,6 +80,18 @@
 					</a-row>
 				</a-card>
 			</a-form-model-item>
+			<a-form-model-item label="用户管理">
+				<a-card>
+					<a-row :gutter="[20, 20]">
+						<a-col :span="24"
+							><a-button @click="showUserConfigModal"
+								>用户管理</a-button
+							>
+							<span class="ml-20">指定用户指定删除,更改</span>
+						</a-col>
+					</a-row>
+				</a-card>
+			</a-form-model-item>
 		</a-form-model>
 		<SettingDatabaseConfigModal
 			ref="SettingDatabaseConfigModal"
@@ -90,6 +102,9 @@
 		<SettingImportJsonConfigModal
 			ref="SettingImportJsonConfigModal"
 		></SettingImportJsonConfigModal>
+		<SettingUserConfigModal
+			ref="SettingUserConfigModal"
+		></SettingUserConfigModal>
 	</div>
 </template>
 
@@ -100,12 +115,11 @@ import { ipcRenderer } from 'electron'
 import SettingDatabaseConfigModal from '@/views/settings/modules/SettingDatabaseConfigModal.vue';
 import SettingResourcePathConfigModal from '@/views/settings/modules/SettingResourcePathConfigModal.vue';
 import SettingImportJsonConfigModal from '@/views/settings/modules/SettingImportJsonConfigModal.vue';
-
-
+import SettingUserConfigModal from '@/views/settings/modules/SettingUserConfigModal.vue';
 export default {
 	name: 'Settings',
 	components: {
-		SettingDatabaseConfigModal, SettingResourcePathConfigModal, SettingImportJsonConfigModal
+		SettingDatabaseConfigModal, SettingResourcePathConfigModal, SettingImportJsonConfigModal, SettingUserConfigModal
 	},
 	data () {
 		return {
@@ -171,6 +185,9 @@ export default {
 				console.log(data);
 				that.$message.success('同步数据成功')
 			})
+		},
+		showUserConfigModal () {
+			this.$refs['SettingUserConfigModal'].show()
 		}
 	},
 }

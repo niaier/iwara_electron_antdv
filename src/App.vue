@@ -15,11 +15,42 @@
 		</a-layout-sider>
 		<a-layout>
 			<a-layout-header style="background: #fff; padding: 0">
-				<a-icon
-					class="trigger"
-					:type="collapsed ? 'menu-unfold' : 'menu-fold'"
-					@click="() => (collapsed = !collapsed)"
-				/>
+				<a-row type="flex" justify="space-between">
+					<a-col :span="6">
+						<a-icon
+							class="trigger"
+							:type="collapsed ? 'menu-unfold' : 'menu-fold'"
+							@click="() => (collapsed = !collapsed)"
+					/></a-col>
+					<a-col :span="6">
+						<div class="float-right">
+							<a-button
+								v-if="!user_info"
+								type="primary"
+								class="mr-20"
+								@click="showLogin"
+								>登录</a-button
+							>
+							<a-button
+								v-if="!user_info"
+								type="primary"
+								class="mr-20"
+								@click="showRegister"
+								>注册</a-button
+							>
+							<span v-if="!!user_info" class="mr-20">{{
+								user_info.username
+							}}</span>
+							<a-button
+								v-if="!!user_info"
+								type="primary"
+								class="mr-20"
+								@click="logout"
+								>退出</a-button
+							>
+						</div>
+					</a-col>
+				</a-row>
 			</a-layout-header>
 			<a-layout-content
 				:style="{
@@ -32,10 +63,16 @@
 				<router-view></router-view>
 			</a-layout-content>
 		</a-layout>
+		<Login ref="Login" @updateUser="updateUser"></Login>
+		<Register ref="Register" @updateUser="updateUser"></Register>
 	</a-layout>
 </template>
 <script>
+
+import Login from '@/components/login/Login.vue';
+import Register from '@/components/login/Register.vue';
 export default {
+	components: { Login, Register },
 	data () {
 		return {
 			collapsed: false,
@@ -46,13 +83,30 @@ export default {
 				{ name: '收藏', path: '/Collection', icon: 'star' },
 				{ name: '设置', path: '/Settings', icon: 'setting' },
 				{ name: '测试', path: '/Test', icon: 'upload' },
-			]
+			],
+			user_info: this.$ls.get('user_info'),
 		};
 	},
 	methods: {
 		jumpPage (path) {
 			console.log(path);
 			this.$router.push(path);
+		},
+		showLogin () {
+			this.$refs['Login'].show()
+		},
+
+		showRegister () {
+			this.$refs['Register'].show()
+
+		},
+		logout () {
+			this.$ls.remove('user_info')
+			this.user_info = this.$ls.get('user_info')
+		},
+		updateUser () {
+			this.user_info = this.$ls.get('user_info')
+			console.log(this.user_info);
 		}
 	}
 };

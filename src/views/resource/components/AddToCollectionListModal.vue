@@ -71,7 +71,7 @@ export default {
 			collectionListName: '',
 			iwara_info_id: 0,
 			iwara_collection_list_id: 0,
-			iwara_user_id: 0,
+			iwara_user_id: this.$ls.get('user_info') ? this.$ls.get('user_info').id : '',
 			collectionList: []
 		};
 	},
@@ -90,7 +90,7 @@ export default {
 		},
 		async addCollectionList () {
 			const name = this.collectionListName;
-			const iwara_user_id = 1
+			const iwara_user_id = this.iwara_user_id
 			const data = { name, iwara_user_id }
 			await db.addCollectionList(data)
 			await this.handleCurCollectionList()

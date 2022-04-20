@@ -17,6 +17,24 @@ class Database extends Dexie {
     this.iwara_collection_list = this.table('iwara_collection_list');
 
   }
+  //注册
+  async register (data) {
+    const userCount = await this.iwara_user.where(data).count()
+    console.log(userCount);
+    if (userCount == 0) {
+      const res = await this.iwara_user.add(data)
+      console.log(res);
+      return res
+    } else {
+      return false
+    }
+
+  }
+  // 登录
+  async login (data) {
+    const result = await this.iwara_user.where(data).toArray()
+    return result
+  }
 
   // 更新同步后的数据
   async syncData (data) {
@@ -236,6 +254,18 @@ class Database extends Dexie {
     await this.iwara_love.put(iwara_love)
     await this.iwara_collection_list.put(iwara_collection_list)
     await this.iwara_collection_list_item.put(iwara_collection_list_item)
+  }
+
+  async getUserList () {
+    return await this.iwara_user.toArray()
+  }
+  async deleteUser (data) {
+    const { id: user_id, id: iwara_user_id } = data
+    await this.iwara_user.where(data).delete()
+    await this.iwara_love.where({ user_id }).delete()
+    await this.iwara_collection_list.where({ iwara_user_id }).delete()
+    await this.iwara_collection_list_item.where({ iwara_user_id }).delete()
+    return
   }
 
 

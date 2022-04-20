@@ -1,6 +1,6 @@
 <!-- 组件说明 -->
 <template>
-	<div class="h-100p">
+	<div class="h-100p" v-if="!!iwara_user_id">
 		<a-layout class="h-100p">
 			<a-layout-sider class="h-100p">
 				<a-menu
@@ -152,7 +152,7 @@ export default {
 
 	data () {
 		return {
-			iwara_user_id: 1,
+			iwara_user_id: this.$ls.get('user_info') ? this.$ls.get('user_info').id : '',
 			collectionList: []
 
 		};
@@ -190,7 +190,7 @@ export default {
 		},
 		async deleteList (item) {
 			const id = item.id
-			const iwara_user_id = 1
+			const iwara_user_id = this.iwara_user_id
 			const data = { id, iwara_user_id }
 			await db.deleteCollectionList(data)
 			this.getCollectionList()
