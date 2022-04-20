@@ -8,9 +8,9 @@
 			:bodyStyle="{
 				'text-align': 'center',
 				padding: '10px 36px',
+				'min-height': '300px',
 			}"
 			@cancel="handleCancel"
-			:footer="null"
 		>
 			<a-row slot="title">
 				<a-col
@@ -44,16 +44,16 @@
 						<a-col :span="4"> 100 </a-col>
 					</a-row>
 				</a-col>
-				<a-col :span="24">
-					<a-input-search
-						v-model="collectionListName"
-						placeholder="新建收藏列表"
-						@search="addCollectionList"
-					>
-						<a-button slot="enterButton"> 新建 </a-button>
-					</a-input-search>
-				</a-col>
 			</a-row>
+			<template slot="footer">
+				<a-input-search
+					v-model="collectionListName"
+					placeholder="新建收藏列表"
+					@search="addCollectionList"
+				>
+					<a-button slot="enterButton"> 新建 </a-button>
+				</a-input-search>
+			</template>
 		</a-modal>
 	</div>
 </template>
@@ -93,6 +93,7 @@ export default {
 			const iwara_user_id = 1
 			const data = { name, iwara_user_id }
 			await db.addCollectionList(data)
+			await this.handleCurCollectionList()
 			this.$message.success('新增收藏列表成功')
 		},
 		async getCollectionList () {

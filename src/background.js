@@ -4,6 +4,8 @@ import { app, protocol, BrowserWindow, ipcMain } from 'electron'
 import { mysqlQuery } from '/src/utils/mysql/mysql-query'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
+
+
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
 // Scheme must be registered before the app is ready
@@ -66,6 +68,8 @@ app.on('ready', async () => {
     }
   }
   createWindow()
+
+  //同步数据
   ipcMain.on('syncMysqlData', async function (ev, data) {
 
     // 发送消息给渲染进程
@@ -77,6 +81,17 @@ app.on('ready', async () => {
 
   })
 
+  //检查文件下载情况
+  ipcMain.on('checkedFile', function (ev) {
+    const fs = require('fs');
+    // const path = require('path');
+    // 获得文件名列表
+    fs.readdir('D:/iwara_dwon/test', (err, file) => {
+      console.log(file);
+    })
+
+    ev.sender.send('checkedFileRe')
+  })
 })
 
 // Exit cleanly on request from parent process in development mode.

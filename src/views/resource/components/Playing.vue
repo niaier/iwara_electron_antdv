@@ -213,7 +213,7 @@ import AddToCollectionListModal from './AddToCollectionListModal.vue'
 // import _ from 'lodash'
 
 export default {
-	name: '',
+	name: 'Playing',
 	components: {
 		AddToLoveModal,
 		AddToCollectionListModal

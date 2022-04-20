@@ -3,7 +3,7 @@ class Database extends Dexie {
   constructor() {
     super('iwara');
     this.version('1.0').stores({
-      iwara_info: '++id,dirname,play_url,title,producer,categories,upload_time,love,views,description,is_down',
+      iwara_info: '++id,dirname,play_url,title,producer,categories,upload_time,love,views,description,is_down,is_checked',
       iwara_user: '++id,&username,password',
       iwara_love: '++id,iwara_info_id,love_level,user_id',
       iwara_collection_list: '++id,name,iwara_user_id',
@@ -23,18 +23,6 @@ class Database extends Dexie {
     return await this.iwara_info.bulkPut(data)
   }
   //获取分页列表数据
-  // async getSinglePageData (orderBy = 'id', page = 1, pageSize = 36, direction = 'reverse') {
-  //   let total = 0;
-  //   let list = [];
-  //   if (direction != 'reverse') {
-  //     total = await this.iwara_info.count()
-  //     list = await this.iwara_info.orderBy(orderBy).offset((page - 1) * pageSize).limit(pageSize).toArray()
-  //   } else {
-  //     total = await this.iwara_info.count()
-  //     list = await this.iwara_info.orderBy(orderBy).offset((page - 1) * pageSize).limit(pageSize).reverse().toArray()
-  //   }
-  //   return { total, list }
-  // }
   async getSinglePageData (data) {
     const { orderBy, page, pageSize, direction, searchKeyword = '' } = data
     console.log(data);

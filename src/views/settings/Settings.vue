@@ -28,7 +28,9 @@
 							<span class="ml-20">导出Json数据文件</span>
 						</a-col>
 						<a-col :span="24"
-							><a-button type="primary">本地校对</a-button>
+							><a-button type="primary" @click="handleChecked"
+								>本地校对</a-button
+							>
 							<span class="ml-20">校对本地文件是否存在</span>
 						</a-col>
 					</a-row>
@@ -98,6 +100,8 @@ import { ipcRenderer } from 'electron'
 import SettingDatabaseConfigModal from '@/views/settings/modules/SettingDatabaseConfigModal.vue';
 import SettingResourcePathConfigModal from '@/views/settings/modules/SettingResourcePathConfigModal.vue';
 import SettingImportJsonConfigModal from '@/views/settings/modules/SettingImportJsonConfigModal.vue';
+
+
 export default {
 	name: 'Settings',
 	components: {
@@ -159,6 +163,14 @@ export default {
 				await db.iwara_collection_list.clear()
 				await db.iwara_collection_list_item.clear()
 			}
+		},
+		async handleChecked () {
+			const that = this
+			ipcRenderer.send('checkedFile')
+			ipcRenderer.on('checkedFileRe', async (ev, data) => {
+				console.log(data);
+				that.$message.success('同步数据成功')
+			})
 		}
 	},
 }
