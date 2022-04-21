@@ -33,6 +33,12 @@
 							>
 							<span class="ml-20">校对本地文件是否存在</span>
 						</a-col>
+						<a-col :span="24"
+							><a-button type="primary" @click="createThumb"
+								>生成缩略图</a-button
+							>
+							<span class="ml-20">校对本地文件是否存在</span>
+						</a-col>
 					</a-row>
 				</a-card>
 			</a-form-model-item>
@@ -184,6 +190,16 @@ export default {
 			const data = { srcPath }
 			ipcRenderer.send('checkedFile', data)
 			ipcRenderer.on('checkedFileRe', async (ev, data) => {
+				console.log(data);
+				that.$message.success('检查文件下载情况')
+			})
+		},
+		async createThumb () {
+			const that = this
+			const srcPath = this.$ls.get('resource_path').resourcePath
+			const data = { srcPath }
+			ipcRenderer.send('createThumb', data)
+			ipcRenderer.on('createThumbRe', async (ev, data) => {
 				console.log(data);
 				that.$message.success('同步数据成功')
 			})

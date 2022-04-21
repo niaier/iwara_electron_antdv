@@ -157,61 +157,35 @@ class Database extends Dexie {
       return loveLevelFlag && userIddFlag
     }).toArray()
 
+    const queryList = []
+    loveList.forEach(item => {
+      queryList.push(item.iwara_info_id)
+    })
     const list =
-      await this.iwara_info.filter(item => {
-        let flag = false;
-        loveList.forEach(item2 => {
-          if (item2.iwara_info_id == item.id) {
-            flag = true
-          }
-        })
-        return flag
+      await this.iwara_info.where('id').anyOf(queryList).reverse().offset((page - 1) * pageSize).limit(pageSize).toArray()
 
-      }).reverse().offset((page - 1) * pageSize).limit(pageSize).toArray()
-
-    let total = await this.iwara_info.filter(item => {
-      let flag = false;
-      loveList.forEach(item2 => {
-        if (item2.iwara_info_id == item.id) {
-          flag = true
-        }
-      })
-      return flag
-    }).count()
+    const total =
+      await this.iwara_info.where('id').anyOf(queryList).count()
     return { list, total }
   }
 
   //获得收藏列表数据
   async getCollectionListSinglePage (data) {
     const { iwara_collection_list_id, iwara_user_id, page, pageSize } = data
-    console.log(iwara_collection_list_id, iwara_user_id, page, pageSize);
     const collectionList = await this.iwara_collection_list_item.filter(item => {
       const collectionFlag = item.iwara_collection_list_id == iwara_collection_list_id
       const userIddFlag = item.iwara_user_id == iwara_user_id
       return collectionFlag && userIddFlag
     }).toArray()
-    console.log(collectionList);
+
+    const queryList = []
+    collectionList.forEach(item => {
+      queryList.push(item.iwara_info_id)
+    })
     const list =
-      await this.iwara_info.filter(item => {
-        let flag = false;
-        collectionList.forEach(item2 => {
-          if (item2.iwara_info_id == item.id) {
-            flag = true
-          }
-        })
-        return flag
+      await this.iwara_info.where('id').anyOf(queryList).reverse().offset((page - 1) * pageSize).limit(pageSize).toArray()
 
-      }).reverse().offset((page - 1) * pageSize).limit(pageSize).toArray()
-
-    let total = await this.iwara_info.filter(item => {
-      let flag = false;
-      collectionList.forEach(item2 => {
-        if (item2.iwara_info_id == item.id) {
-          flag = true
-        }
-      })
-      return flag
-    }).count()
+    let total = await this.iwara_info.where('id').anyOf(queryList).count()
     console.log(list);
     return { list, total }
   }

@@ -4,7 +4,8 @@ import { app, protocol, BrowserWindow, ipcMain } from 'electron'
 import { mysqlQuery } from '/src/utils/mysql/mysql-query'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
-import { handleBatch } from '/src/utils/check/file-read.js'
+import { handleBatch } from '/src/utils/thumb/create-thumb'
+import { handleCheck } from '/src/utils/check/file-read'
 
 
 
@@ -38,7 +39,6 @@ async function createWindow () {
     if (!process.env.IS_TEST) win.webContents.openDevTools()
   } else {
     createProtocol('app')
-    // Load the index.html when not in development
     win.loadURL('app://./index.html')
   }
 }
@@ -88,8 +88,16 @@ app.on('ready', async () => {
   ipcMain.on('checkedFile', function (ev, data) {
     const { srcPath } = data
     console.log(srcPath);
-    handleBatch(srcPath)
+    handleCheck(srcPath)
     ev.sender.send('checkedFileRe', srcPath)
+  })
+
+  //生成缩略图
+  ipcMain.on('createThumb', function (ev, data) {
+    const { srcPath } = data
+    console.log(srcPath);
+    handleBatch(srcPath)
+    ev.sender.send('createThumbRe', srcPath)
   })
 })
 
