@@ -190,7 +190,7 @@ export default {
 			const data = { srcPath }
 			ipcRenderer.send('checkedFile', data)
 			ipcRenderer.on('checkedFileRe', async (ev, data) => {
-				console.log(data);
+				await db.putCheck(data)
 				that.$message.success('检查文件下载情况')
 			})
 		},

@@ -28,6 +28,9 @@
 									:ratio="16 / 9"
 								>
 									<video
+										ref="video"
+										id="video"
+										:src="videoSrc"
 										:style="{
 											width: '100%',
 											height: '100%',
@@ -234,7 +237,8 @@ export default {
 			iwara_love_id: 0,
 			user_id: this.$ls.get('user_info') ? this.$ls.get('user_info').id : '',
 			isPageFullscreen: false,
-			curVideoProducerProductionList: []
+			curVideoProducerProductionList: [],
+
 		};
 	},
 	computed: {
@@ -248,6 +252,10 @@ export default {
 			} else {
 				return []
 			}
+		},
+		videoSrc () {
+			const videoSrc = this.$ls.get('resource_path').resourcePath + '\\' + this.info.dirname + '\\' + this.info.title + '.mp4'
+			return videoSrc
 		}
 	},
 	created () {
@@ -259,6 +267,7 @@ export default {
 			this.visible = true;
 			this.getLoveStatus()
 			this.getCurVideoProducerProductionList()
+
 		},
 		handleClose () {
 			this.visible = false;
@@ -315,6 +324,8 @@ export default {
 		}
 
 	},
+	watch: {
+	}
 }
 </script>
 

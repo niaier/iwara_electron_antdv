@@ -17,6 +17,15 @@ class Database extends Dexie {
     this.iwara_collection_list = this.table('iwara_collection_list');
 
   }
+  //检查下载内容
+  async putCheck (data) {
+    const hasDownList = data.filter(item => item.hasMp4 == true)
+    const hasNoDownList = data.filter(item => item.hasMp4 == false)
+    const hasDownDirnameList = hasDownList.map(item => parseInt(item.dirname))
+    const hasNoDownDirnameList = hasNoDownList.map(item => parseInt(item.dirname))
+    await this.iwara_info.where('dirname').anyOf(hasDownDirnameList).modify(item => { item.is_checked = 1 })
+    await this.iwara_info.where('dirname').anyOf(hasNoDownDirnameList).modify(item => { item.is_checked = 0 })
+  }
   //注册
   async register (data) {
     const userCount = await this.iwara_user.where(data).count()
@@ -42,7 +51,7 @@ class Database extends Dexie {
   }
   //获取分页列表数据
   async getSinglePageData (data) {
-    const { orderBy, page, pageSize, direction, searchKeyword = '' } = data
+    const { orderBy, page, pageSize, direction, searchKeyword = '', mode = 1 } = data
     console.log(data);
     console.log(orderBy);
     let total = 0;
@@ -52,26 +61,33 @@ class Database extends Dexie {
         const titleFlag = item.title.indexOf(searchKeyword) != -1
         const producer = item.producer.indexOf(searchKeyword) != -1
         const tagFlag = item.categories.indexOf(searchKeyword) != -1
-        return titleFlag || producer || tagFlag
+        const modeFlag = item.is_checked == mode
+        console.log(modeFlag);
+        return titleFlag || producer || tagFlag && modeFlag
       }).count()
       list = await this.iwara_info.filter(item => {
         const titleFlag = item.title.indexOf(searchKeyword) != -1
         const producer = item.producer.indexOf(searchKeyword) != -1
         const tagFlag = item.categories.indexOf(searchKeyword) != -1
-        return titleFlag || producer || tagFlag
+        const modeFlag = item.is_checked == mode
+        return (titleFlag || producer || tagFlag) && modeFlag
       }).offset((page - 1) * pageSize).limit(pageSize).toArray()
     } else {
       total = await this.iwara_info.filter(item => {
         const titleFlag = item.title.indexOf(searchKeyword) != -1
         const producer = item.producer.indexOf(searchKeyword) != -1
         const tagFlag = item.categories.indexOf(searchKeyword) != -1
-        return titleFlag || producer || tagFlag
+        const checkStatus = item.is_checked == undefined ? 0 : item.is_checked
+        const modeFlag = checkStatus == mode
+        return (titleFlag || producer || tagFlag) && modeFlag
       }).count()
       list = await this.iwara_info.filter(item => {
         const titleFlag = item.title.indexOf(searchKeyword) != -1
         const producer = item.producer.indexOf(searchKeyword) != -1
         const tagFlag = item.categories.indexOf(searchKeyword) != -1
-        return titleFlag || producer || tagFlag
+        const checkStatus = item.is_checked == undefined ? 0 : item.is_checked
+        const modeFlag = checkStatus == mode
+        return (titleFlag || producer || tagFlag) && modeFlag
       }).offset((page - 1) * pageSize).limit(pageSize).reverse().toArray()
     }
     return { total, list }

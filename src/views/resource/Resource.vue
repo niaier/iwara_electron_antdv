@@ -15,7 +15,12 @@
 		<!-- 搜索栏 END -->
 
 		<!-- 筛选器 START -->
-
+		<a-row class="mt-20">
+			<a-radio-group v-model="mode" @change="checkedChange">
+				<a-radio-button :value="1"> 已检查 </a-radio-button>
+				<a-radio-button :value="0"> 未检查 </a-radio-button>
+			</a-radio-group>
+		</a-row>
 		<!-- 筛选器 END -->
 		<!-- 分页器 START -->
 		<a-row class="mt-20" type="flex" justify="center">
@@ -40,7 +45,7 @@
 		<!-- 视频列表 START -->
 		<a-row class="mt-20" type="flex" justify="center">
 			<a-col :span="24">
-				<a-row :gutter="[16, 16]">
+				<a-row :gutter="[16, 16]" type="flex" justify="center">
 					<!-- 视频单元 START -->
 					<a-col
 						:sm="12"
@@ -52,7 +57,13 @@
 						<a-row class="mb-5" type="flex" justify="center"
 							><a-col>
 								<img
-									src=""
+									:src="
+										resourcePath +
+										'\\' +
+										item.dirname +
+										'\\' +
+										'thumb.jpg'
+									"
 									alt=""
 									width="189"
 									height="106"
@@ -69,8 +80,8 @@
 										width: '189px',
 									}"
 								>
-									标题部分
-									<!-- {{ item.title }} -->
+									<!-- 标题部分 -->
+									{{ item.title }}
 								</div>
 							</a-col></a-row
 						>
@@ -121,6 +132,9 @@ export default {
 	data () {
 		return {
 			searchKeyword: "",
+			mode: 1,
+			resourcePath: this.$ls.get('resource_path')
+				.resourcePath
 		};
 	},
 	computed: {
@@ -138,18 +152,21 @@ export default {
 		showPlaying (item) {
 			this.$refs['Playing'].show(item)
 		},
-		async getSinglePageData (searchKeyword) {
+		async getSinglePageData (searchKeyword, mode) {
 			const orderBy = this.orderBy
 			const page = this.pagination.current
 			const pageSize = this.pagination.pageSize
 			const direction = this.direction
 			const data = {
-				orderBy, page, pageSize, direction, searchKeyword
+				orderBy, page, pageSize, direction, searchKeyword, mode
 			}
 			const result = await db.getSinglePageData(data)
 			this.datalist = result.list
 			this.pagination.total = result.total
 		},
+		checkedChange () {
+			this.getSinglePageData('', this.mode)
+		}
 	},
 }
 </script>

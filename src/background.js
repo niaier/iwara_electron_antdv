@@ -29,7 +29,8 @@ async function createWindow () {
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
       nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION,
       contextIsolation: !process.env.ELECTRON_NODE_INTEGRATION,
-      webviewTag: true
+      webviewTag: true,
+      webSecurity: false
     }
   })
 
@@ -85,11 +86,15 @@ app.on('ready', async () => {
   })
 
   //检查文件下载情况
-  ipcMain.on('checkedFile', function (ev, data) {
+  ipcMain.on('checkedFile', async function (ev, data) {
     const { srcPath } = data
     console.log(srcPath);
-    handleCheck(srcPath)
-    ev.sender.send('checkedFileRe', srcPath)
+    const result = await handleCheck(srcPath)
+    const putData = result.checkedList.map(item => {
+      item.is_checked = item.hasMp4 ? 1 : 0
+      return item
+    })
+    ev.sender.send('checkedFileRe', putData)
   })
 
   //生成缩略图
