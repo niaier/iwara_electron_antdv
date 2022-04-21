@@ -180,7 +180,9 @@ export default {
 		},
 		async handleChecked () {
 			const that = this
-			ipcRenderer.send('checkedFile')
+			const srcPath = this.$ls.get('resource_path').resourcePath
+			const data = { srcPath }
+			ipcRenderer.send('checkedFile', data)
 			ipcRenderer.on('checkedFileRe', async (ev, data) => {
 				console.log(data);
 				that.$message.success('同步数据成功')

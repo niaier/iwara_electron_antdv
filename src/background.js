@@ -4,6 +4,9 @@ import { app, protocol, BrowserWindow, ipcMain } from 'electron'
 import { mysqlQuery } from '/src/utils/mysql/mysql-query'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
+import { handleBatch } from '/src/utils/check/file-read.js'
+
+
 
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
@@ -82,15 +85,11 @@ app.on('ready', async () => {
   })
 
   //检查文件下载情况
-  ipcMain.on('checkedFile', function (ev) {
-    const fs = require('fs');
-    // const path = require('path');
-    // 获得文件名列表
-    fs.readdir('D:/iwara_dwon/test', (err, file) => {
-      console.log(file);
-    })
-
-    ev.sender.send('checkedFileRe')
+  ipcMain.on('checkedFile', function (ev, data) {
+    const { srcPath } = data
+    console.log(srcPath);
+    handleBatch(srcPath)
+    ev.sender.send('checkedFileRe', srcPath)
   })
 })
 
