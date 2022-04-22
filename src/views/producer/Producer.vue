@@ -48,7 +48,7 @@
 				<!-- 视频列表 START -->
 				<a-row class="mt-20" type="flex" justify="center">
 					<a-col :span="24">
-						<a-row :gutter="[16, 16]">
+						<a-row :gutter="[16, 16]" type="flex" justify="center">
 							<!-- 视频单元 START -->
 							<a-col
 								:sm="12"
@@ -59,8 +59,49 @@
 							>
 								<a-row class="mb-5" type="flex" justify="center"
 									><a-col>
+										<div
+											class="
+												position-absolute
+												top-8
+												right-8
+											"
+											:style="{
+												color: '#fff',
+											}"
+										>
+											<a-icon
+												type="heart"
+												theme="filled"
+											/>
+											<span class="ml-5">{{
+												item.love
+											}}</span>
+										</div>
+										<div
+											class="
+												position-absolute
+												top-8
+												left-8
+											"
+											:style="{
+												color: '#fff',
+											}"
+										>
+											<a-icon type="eye" theme="filled" />
+
+											<span class="ml-5">{{
+												item.views
+											}}</span>
+										</div>
+
 										<img
-											src=""
+											:src="
+												resourcePath +
+												'\\' +
+												item.dirname +
+												'\\' +
+												'thumb.jpg'
+											"
 											alt=""
 											width="189"
 											height="106"
@@ -77,8 +118,8 @@
 												width: '189px',
 											}"
 										>
-											标题部分
-											<!-- {{ item.title }} -->
+											<!-- 标题部分 -->
+											{{ item.title }}
 										</div>
 									</a-col></a-row
 								>
@@ -121,7 +162,8 @@
 
 import db from '@/api/dexie/api.js'
 import resourceMixin from '@/mixins/resource-list';
-import Playing from '@/views/resource/components/Playing.vue'
+import Playing from '@/components/drawer/Playing.vue'
+
 
 
 export default {

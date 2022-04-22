@@ -150,7 +150,7 @@
 //import x from ''
 import db from '@/api/dexie/api.js'
 import resourceMixin from '@/mixins/resource-list';
-import Playing from '@/views/resource/components/Playing.vue'
+import Playing from '@/components/drawer/Playing.vue'
 
 export default {
 	name: '',

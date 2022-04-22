@@ -215,8 +215,8 @@
 <script>
 //import x from ''
 import db from '@/api/dexie/api.js'
-import AddToLoveModal from './AddToLoveModal.vue'
-import AddToCollectionListModal from './AddToCollectionListModal.vue'
+import AddToLoveModal from '@/components/modal/PlayingAddToLoveModal.vue'
+import AddToCollectionListModal from '@/components/modal/PlayingAddToCollectionListModal.vue'
 // import _ from 'lodash'
 
 export default {
