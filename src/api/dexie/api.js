@@ -51,9 +51,9 @@ class Database extends Dexie {
   }
   //获取分页列表数据
   async getSinglePageData (data) {
-    const { orderBy, page, pageSize, direction, searchKeyword = '', mode = 1 } = data
+    const { sortBy, page, pageSize, direction, searchKeyword = '', mode = 1 } = data
     console.log(data);
-    console.log(orderBy);
+    console.log(sortBy);
     let total = 0;
     let list = [];
     if (direction != 'reverse') {
@@ -65,7 +65,7 @@ class Database extends Dexie {
         console.log(modeFlag);
         return titleFlag || producer || tagFlag && modeFlag
       }).count()
-      list = await this.iwara_info.filter(item => {
+      list = await this.iwara_info.orderBy(sortBy).filter(item => {
         const titleFlag = item.title.indexOf(searchKeyword) != -1
         const producer = item.producer.indexOf(searchKeyword) != -1
         const tagFlag = item.categories.indexOf(searchKeyword) != -1
@@ -81,7 +81,7 @@ class Database extends Dexie {
         const modeFlag = checkStatus == mode
         return (titleFlag || producer || tagFlag) && modeFlag
       }).count()
-      list = await this.iwara_info.filter(item => {
+      list = await this.iwara_info.orderBy(sortBy).filter(item => {
         const titleFlag = item.title.indexOf(searchKeyword) != -1
         const producer = item.producer.indexOf(searchKeyword) != -1
         const tagFlag = item.categories.indexOf(searchKeyword) != -1

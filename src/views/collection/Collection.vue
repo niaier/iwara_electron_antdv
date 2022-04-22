@@ -51,6 +51,7 @@
 								:pageSizeOptions="pagination.pageSizeOptions"
 								:total="pagination.total"
 								:showSizeChanger="pagination.showSizeChanger"
+								:hideOnSinglePage="pagination.hideOnSinglePage"
 								:showQuickJumper="pagination.showQuickJumper"
 								@change="pageChange"
 								@showSizeChange="showSizeChange"
@@ -61,7 +62,11 @@
 					<!-- 视频列表 START -->
 					<a-row class="mt-20" type="flex" justify="center">
 						<a-col :span="24">
-							<a-row :gutter="[16, 16]">
+							<a-row
+								:gutter="[16, 16]"
+								type="flex"
+								justify="center"
+							>
 								<!-- 视频单元 START -->
 								<a-col
 									:sm="12"
@@ -75,8 +80,52 @@
 										type="flex"
 										justify="center"
 										><a-col>
+											<div
+												class="
+													position-absolute
+													top-8
+													right-8
+												"
+												:style="{
+													color: '#fff',
+												}"
+											>
+												<a-icon
+													type="heart"
+													theme="filled"
+												/>
+												<span class="ml-5">{{
+													item.love
+												}}</span>
+											</div>
+											<div
+												class="
+													position-absolute
+													top-8
+													left-8
+												"
+												:style="{
+													color: '#fff',
+												}"
+											>
+												<a-icon
+													type="eye"
+													theme="filled"
+												/>
+
+												<span class="ml-5">{{
+													item.views
+												}}</span>
+											</div>
+
 											<img
-												src=""
+												:src="
+													resourcePath +
+													'\\' +
+													item.dirname +
+													'\\' +
+													'thumb.jpg'
+												"
 												alt=""
 												width="189"
 												height="106"
@@ -95,8 +144,8 @@
 													width: '189px',
 												}"
 											>
-												标题部分
-												<!-- {{ item.title }} -->
+												<!-- 标题部分 -->
+												{{ item.title }}
 											</div>
 										</a-col></a-row
 									>
@@ -118,6 +167,7 @@
 								:pageSizeOptions="pagination.pageSizeOptions"
 								:total="pagination.total"
 								:showSizeChanger="pagination.showSizeChanger"
+								:hideOnSinglePage="pagination.hideOnSinglePage"
 								:showQuickJumper="pagination.showQuickJumper"
 								@change="pageChange"
 								@showSizeChange="showSizeChange"
@@ -153,7 +203,10 @@ export default {
 	data () {
 		return {
 			iwara_user_id: this.$ls.get('user_info') ? this.$ls.get('user_info').id : '',
-			collectionList: []
+			collectionList: [],
+			resourcePath: this.$ls.get('resource_path').resourcePath,
+
+
 
 		};
 	},

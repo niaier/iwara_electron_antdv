@@ -15,11 +15,20 @@
 		<!-- 搜索栏 END -->
 
 		<!-- 筛选器 START -->
-		<a-row class="mt-20">
-			<a-radio-group v-model="mode" @change="checkedChange">
-				<a-radio-button :value="1"> 已检查 </a-radio-button>
-				<a-radio-button :value="0"> 未检查 </a-radio-button>
-			</a-radio-group>
+		<a-row class="mt-20" :gutter="[16, 16]">
+			<a-col :span="24">
+				<a-radio-group v-model="sortBy" @change="sortChange">
+					<a-radio-button value="love"> loved </a-radio-button>
+					<a-radio-button value="views"> views </a-radio-button>
+					<a-radio-button value="upload_time"> date </a-radio-button>
+				</a-radio-group></a-col
+			>
+			<a-col :span="24">
+				<a-radio-group v-model="mode" @change="checkedChange">
+					<a-radio-button :value="1"> 校验通过 </a-radio-button>
+					<a-radio-button :value="0"> 未通过 </a-radio-button>
+				</a-radio-group></a-col
+			>
 		</a-row>
 		<!-- 筛选器 END -->
 		<!-- 分页器 START -->
@@ -56,6 +65,26 @@
 					>
 						<a-row class="mb-5" type="flex" justify="center"
 							><a-col>
+								<div
+									class="position-absolute top-8 right-8"
+									:style="{
+										color: '#fff',
+									}"
+								>
+									<a-icon type="heart" theme="filled" />
+									<span class="ml-5">{{ item.love }}</span>
+								</div>
+								<div
+									class="position-absolute top-8 left-8"
+									:style="{
+										color: '#fff',
+									}"
+								>
+									<a-icon type="eye" theme="filled" />
+
+									<span class="ml-5">{{ item.views }}</span>
+								</div>
+
 								<img
 									:src="
 										resourcePath +
@@ -133,8 +162,8 @@ export default {
 		return {
 			searchKeyword: "",
 			mode: 1,
-			resourcePath: this.$ls.get('resource_path')
-				.resourcePath
+			resourcePath: this.$ls.get('resource_path').resourcePath,
+			sortBy: ''
 		};
 	},
 	computed: {
@@ -152,20 +181,26 @@ export default {
 		showPlaying (item) {
 			this.$refs['Playing'].show(item)
 		},
-		async getSinglePageData (searchKeyword, mode) {
-			const orderBy = this.orderBy
+		async getSinglePageData () {
+			const sortBy = this.sortBy
 			const page = this.pagination.current
 			const pageSize = this.pagination.pageSize
 			const direction = this.direction
+			const mode = this.mode
+			const searchKeyword = this.searchKeyword
 			const data = {
-				orderBy, page, pageSize, direction, searchKeyword, mode
+				page, pageSize, direction, searchKeyword, mode, sortBy
 			}
 			const result = await db.getSinglePageData(data)
 			this.datalist = result.list
 			this.pagination.total = result.total
 		},
 		checkedChange () {
-			this.getSinglePageData('', this.mode)
+			this.getSinglePageData()
+		},
+		sortChange () {
+			this.getSinglePageData()
+
 		}
 	},
 }
