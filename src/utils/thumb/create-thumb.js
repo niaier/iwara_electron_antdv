@@ -171,23 +171,7 @@ function mergeVideo (dirPath) {
   const thumbMp4Path = path.join(dirPath, 'thumb.mp4')
 
   return new Promise((resolve, reject) => {
-    // command
-    //   .input(path1)
-    //   .input(path2)
-    //   .input(path3)
-    //   .input(path4)
-    //   .input(path5)
-    //   .outputOptions([
-    //     '-s 378x212',
-    //   ])
-    //   .on('error', (err) => {
-    //     reject(err)
-    //   })
-    //   .on('end', () => {
-    //     console.log('合并thumb成功', dirPath);
-    //     resolve(true)
-    //   })
-    //   .mergeToFile(thumbMp4Path, dirPath)
+
     const cmd = `ffmpeg -i "concat:${path1}|${path2}|${path3}|${path4}|${path5}" -s 378x212 -r 15 -codec copy ${thumbMp4Path}`
     console.log(cmd);
     child.exec(cmd, function (err) {

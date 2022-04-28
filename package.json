@@ -1,6 +1,8 @@
 {
   "name": "iwara_electron_antdv",
-  "version": "0.1.0",
+  "version": "0.1.0Beta",
+  "description": "A local player for iwara",
+  "author": "niaier",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -20,6 +22,7 @@
     "dexie": "^3.2.1",
     "fluent-ffmpeg": "^2.1.2",
     "lodash": "^4.17.21",
+    "moment": "^2.29.3",
     "mysql": "^2.18.1",
     "screenfull": "^4.2.0",
     "vue": "^2.6.11",

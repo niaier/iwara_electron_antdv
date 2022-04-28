@@ -53,6 +53,7 @@ export default {
 		},
 		handleOk () {
 			this.$ls.set('resource_path', this.form)
+			this.visible = false
 		}
 	},
 }

@@ -191,7 +191,7 @@ export default {
 			ipcRenderer.send('checkedFile', data)
 			ipcRenderer.on('checkedFileRe', async (ev, data) => {
 				await db.putCheck(data)
-				that.$message.success('检查文件下载情况')
+				that.$message.success('检查文件下载情况完成')
 			})
 		},
 		async createThumb () {

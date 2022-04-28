@@ -82,6 +82,7 @@ export default {
 			} else {
 				this.$message.error('导入Json数据失败')
 			}
+			this.visible = false
 		},
 		beforeUpload (file, files) {
 			const that = this

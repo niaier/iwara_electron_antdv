@@ -21,10 +21,17 @@ class Database extends Dexie {
   async putCheck (data) {
     const hasDownList = data.filter(item => item.hasMp4 == true)
     const hasNoDownList = data.filter(item => item.hasMp4 == false)
+    console.log(1);
+    console.log(hasNoDownList.filter(item => { return isNaN(parseInt(item.dirname)) }));
+    console.log(2);
     const hasDownDirnameList = hasDownList.map(item => parseInt(item.dirname))
     const hasNoDownDirnameList = hasNoDownList.map(item => parseInt(item.dirname))
     await this.iwara_info.where('dirname').anyOf(hasDownDirnameList).modify(item => { item.is_checked = 1 })
+    console.log(3);
+    console.log(hasNoDownDirnameList);
     await this.iwara_info.where('dirname').anyOf(hasNoDownDirnameList).modify(item => { item.is_checked = 0 })
+    console.log(4);
+
   }
   //注册
   async register (data) {

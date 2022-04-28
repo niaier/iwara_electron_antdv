@@ -2,7 +2,7 @@
 <template>
 	<div class="">
 		<a-drawer
-			:title="'info.title'"
+			:title="info.title"
 			:visible="visible"
 			@close="handleClose"
 			width="100%"
@@ -109,6 +109,9 @@
 												:style="{ color: '#3b7efc' }"
 											/>
 											<span class="ml-10">简介说明</span>
+											<span class="ml-10">{{
+												uploadTime
+											}}</span>
 										</a-col>
 										<a-col :span="24">
 											{{ info.description }}
@@ -215,6 +218,7 @@
 <script>
 //import x from ''
 import db from '@/api/dexie/api.js'
+import moment from 'moment'
 import AddToLoveModal from '@/components/modal/PlayingAddToLoveModal.vue'
 import AddToCollectionListModal from '@/components/modal/PlayingAddToCollectionListModal.vue'
 // import _ from 'lodash'
@@ -256,6 +260,9 @@ export default {
 		videoSrc () {
 			const videoSrc = this.$ls.get('resource_path').resourcePath + '\\' + this.info.dirname + '\\' + this.info.title + '.mp4'
 			return videoSrc
+		},
+		uploadTime () {
+			return moment(this.info.upload_time).format('YYYY-MM-DD HH:mm')
 		}
 	},
 	created () {
@@ -325,6 +332,11 @@ export default {
 
 	},
 	watch: {
+		visible (value) {
+			if (!value) {
+				document.querySelector('#video').pause()
+			}
+		}
 	}
 }
 </script>

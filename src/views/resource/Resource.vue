@@ -86,20 +86,17 @@
 								</div>
 
 								<img
-									:src="
-										resourcePath +
-										'\\' +
-										item.dirname +
-										'\\' +
-										'thumb.jpg'
-									"
+									:src="item.src"
 									alt=""
 									width="189"
 									height="106"
 									:style="{
 										background: 'pink',
+										cursor: 'pointer',
 									}"
-									@click="showPlaying(item)" /></a-col
+									@click="showPlaying(item)"
+									@mouseover="imgMouseover(index)"
+									@mouseout="imgMouseout(index)" /></a-col
 						></a-row>
 						<a-row type="flex" justify="center"
 							><a-col>
@@ -107,10 +104,15 @@
 									class="title"
 									:style="{
 										width: '189px',
+										cursor: 'pointer',
+										color: '#1890ff',
 									}"
 								>
 									<!-- 标题部分 -->
 									{{ item.title }}
+								</div>
+								<div>
+									{{ item.uploadTime }}
 								</div>
 							</a-col></a-row
 						>
@@ -148,6 +150,7 @@
 
 <script>
 //import x from ''
+import moment from 'moment';
 import db from '@/api/dexie/api.js'
 import resourceMixin from '@/mixins/resource-list';
 import Playing from '@/components/drawer/Playing.vue'
@@ -192,7 +195,14 @@ export default {
 				page, pageSize, direction, searchKeyword, mode, sortBy
 			}
 			const result = await db.getSinglePageData(data)
-			this.datalist = result.list
+			this.datalist = result.list.map(item => {
+				item.uploadTime = moment(item.upload_time).format('YYYY-MM-DD HH:mm')
+				item.jpgSrc = this.resourcePath + '\\' + item.dirname + '\\' + 'thumb.jpg'
+				item.gifSrc = this.resourcePath + '\\' + item.dirname + '\\' + 'thumb.gif'
+				item.src = item.jpgSrc
+
+				return item
+			})
 			this.pagination.total = result.total
 		},
 		checkedChange () {
@@ -200,6 +210,15 @@ export default {
 		},
 		sortChange () {
 			this.getSinglePageData()
+
+		},
+		imgMouseover (index) {
+			console.log(this.datalist);
+			this.datalist[index].src = this.datalist[index].gifSrc
+		},
+		imgMouseout (index) {
+			console.log('object');
+			this.datalist[index].src = this.datalist[index].jpgSrc
 
 		}
 	},

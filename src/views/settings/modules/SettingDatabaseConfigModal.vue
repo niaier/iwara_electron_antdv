@@ -62,6 +62,7 @@ export default {
 		},
 		handleOk () {
 			this.$ls.set('database_config', this.form)
+			this.visible = false
 
 		}
 	},

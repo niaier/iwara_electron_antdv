@@ -35,7 +35,10 @@ export const handleCheck = function (srcPath) {
   })
 }
 async function checkUtils (srcPath) {
-  const dirList = await asyncReaddir(srcPath)
+  let dirList = await asyncReaddir(srcPath)
+  dirList = dirList.filter(item => {
+    return item.indexOf("tempo") == -1
+  })
   const checkedList = []
   for (let i = 0; i < dirList.length; i++) {
     {

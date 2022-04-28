@@ -1,11 +1,12 @@
 // 'use strict'
 
-import { app, protocol, BrowserWindow, ipcMain } from 'electron'
-import { mysqlQuery } from '/src/utils/mysql/mysql-query'
+import { app, protocol, BrowserWindow } from 'electron'
+
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
-import { handleBatch } from '/src/utils/thumb/create-thumb'
-import { handleCheck } from '/src/utils/check/file-read'
+import { ipcInit } from '/src/api/ipc/ipc-event';
+
+ipcInit()
 
 
 
@@ -30,6 +31,7 @@ async function createWindow () {
       nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION,
       contextIsolation: !process.env.ELECTRON_NODE_INTEGRATION,
       webviewTag: true,
+      // 允许访问本地资源
       webSecurity: false
     }
   })
@@ -73,37 +75,7 @@ app.on('ready', async () => {
   }
   createWindow()
 
-  //同步数据
-  ipcMain.on('syncMysqlData', async function (ev, data) {
 
-    // 发送消息给渲染进程
-    const config = data
-    const sql = 'select * from iwara_info where is_down=1'
-    mysqlQuery
-    const result = await mysqlQuery(config, sql)
-    ev.sender.send('syncMysqlDataRe', result)
-
-  })
-
-  //检查文件下载情况
-  ipcMain.on('checkedFile', async function (ev, data) {
-    const { srcPath } = data
-    console.log(srcPath);
-    const result = await handleCheck(srcPath)
-    const putData = result.checkedList.map(item => {
-      item.is_checked = item.hasMp4 ? 1 : 0
-      return item
-    })
-    ev.sender.send('checkedFileRe', putData)
-  })
-
-  //生成缩略图
-  ipcMain.on('createThumb', function (ev, data) {
-    const { srcPath } = data
-    console.log(srcPath);
-    handleBatch(srcPath)
-    ev.sender.send('createThumbRe', srcPath)
-  })
 })
 
 // Exit cleanly on request from parent process in development mode.
