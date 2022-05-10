@@ -246,11 +246,11 @@ class Database extends Dexie {
       iwara_collection_list,
       iwara_collection_list_item
     } = data
-    await this.iwara_info.put(iwara_info)
-    await this.iwara_user.put(iwara_user)
-    await this.iwara_love.put(iwara_love)
-    await this.iwara_collection_list.put(iwara_collection_list)
-    await this.iwara_collection_list_item.put(iwara_collection_list_item)
+    await this.iwara_info.bulkPut(iwara_info)
+    await this.iwara_user.bulkPut(iwara_user)
+    await this.iwara_love.bulkPut(iwara_love)
+    await this.iwara_collection_list.bulkPut(iwara_collection_list)
+    await this.iwara_collection_list_item.bulkPut(iwara_collection_list_item)
   }
 
   async getUserList () {

@@ -158,7 +158,8 @@ export default {
 			const blob = new Blob([dataStr]);
 			const href = window.URL.createObjectURL(blob)
 			eLink.href = href
-			eLink.setAttribute('download', 'iwara的Json数据.json')
+			const time = new Date().getTime()
+			eLink.setAttribute('download', `iwaraJson数据${time}.json`)
 			eLink.style.display = 'none'
 			document.body.appendChild(eLink)
 			eLink.click()

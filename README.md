@@ -1,24 +1,26 @@
 # iwara_electron_antdv
 
-## Project setup
+## 安装依赖
+
 ```
-npm install
+npm i
 ```
 
-### Compiles and hot-reloads for development
+## 运行
+
 ```
-npm run serve
+npm run electron:serve
 ```
 
-### Compiles and minifies for production
+### 编译打包
 ```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
+npm run electron:build
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## 使用步骤
+
+1. 导入json数据
+2. 配置资源路径
+3. 本地校对
+4. 进入资源菜单查看筛选
+
