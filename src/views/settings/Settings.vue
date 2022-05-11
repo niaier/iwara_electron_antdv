@@ -134,6 +134,9 @@ export default {
 	computed: {
 
 	},
+	created () {
+		this.ipcListen()
+	},
 	methods: {
 		showDatabaseConfig () {
 			this.$refs['SettingDatabaseConfigModal'].show()
@@ -142,13 +145,8 @@ export default {
 			this.$refs['SettingResourcePathConfigModal'].show()
 		},
 		async syncData () {
-			const that = this
 			const config = this.$ls.get('database_config', {})
 			ipcRenderer.send('syncMysqlData', config)
-			ipcRenderer.on('syncMysqlDataRe', async (ev, data) => {
-				await db.syncData(data)
-				that.$message.success('同步数据成功')
-			})
 		},
 		async exportJson () {
 			const eLink = document.createElement('a')
@@ -186,27 +184,34 @@ export default {
 			}
 		},
 		async handleChecked () {
-			const that = this
 			const srcPath = this.$ls.get('resource_path').resourcePath
 			const data = { srcPath }
 			ipcRenderer.send('checkedFile', data)
-			ipcRenderer.on('checkedFileRe', async (ev, data) => {
-				await db.putCheck(data)
-				that.$message.success('检查文件下载情况完成')
-			})
+
 		},
 		async createThumb () {
-			const that = this
 			const srcPath = this.$ls.get('resource_path').resourcePath
 			const data = { srcPath }
 			ipcRenderer.send('createThumb', data)
+
+		},
+		showUserConfigModal () {
+			this.$refs['SettingUserConfigModal'].show()
+		},
+		ipcListen () {
+			const that = this
 			ipcRenderer.on('createThumbRe', async (ev, data) => {
 				console.log(data);
 				that.$message.success('同步数据成功')
 			})
-		},
-		showUserConfigModal () {
-			this.$refs['SettingUserConfigModal'].show()
+			ipcRenderer.on('checkedFileRe', async (ev, data) => {
+				await db.putCheck(data)
+				that.$message.success('检查文件下载情况完成')
+			})
+			ipcRenderer.on('syncMysqlDataRe', async (ev, data) => {
+				await db.syncData(data)
+				that.$message.success('同步数据成功')
+			})
 		}
 	},
 }
