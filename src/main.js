@@ -16,11 +16,9 @@ const storageOptions = {
 }
 
 Vue.use(Storage, storageOptions)
-
-
 Vue.use(VueKeepRatio);
-
 Vue.use(Antd)
+
 Vue.config.productionTip = false
 
 new Vue({
