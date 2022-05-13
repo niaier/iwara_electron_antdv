@@ -202,7 +202,7 @@ export default {
 			const that = this
 			ipcRenderer.on('createThumbRe', async (ev, data) => {
 				console.log(data);
-				that.$message.success('同步数据成功')
+				that.$message.success('新增缩略图成功')
 			})
 			ipcRenderer.on('checkedFileRe', async (ev, data) => {
 				await db.putCheck(data)

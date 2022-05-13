@@ -3211,10 +3211,10 @@ commander@~2.19.0:
   resolved "https://registry.npmmirror.com/commander/-/commander-2.19.0.tgz"
   integrity sha512-6tvAOO+D6OENvRAh524Dh9jcfKTYDQAqvqezbCW82xj5X0pSrcpxtvRKHLG0yBY6SD7PSDrJaj+0AiOcKVd1Xg==
 
-common-css-js@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.npmjs.org/common-css-js/-/common-css-js-1.0.0.tgz"
-  integrity sha512-t48ApgZ7XYOHTPUnDqf2xJYVYv/vS7tjD0ocn+/GU2m+Ehl+5ERrXKo2kckIXqb3LJt0XOhqD4K/s3NSnWlkzw==
+common-css-js@^1.0.7:
+  version "1.0.7"
+  resolved "https://registry.npmjs.org/common-css-js/-/common-css-js-1.0.7.tgz#a3e523332fef035631f4e5db0276173041ad747e"
+  integrity sha512-Jv4j3vGifvKAUfVRexzMPxpWEf+aWt5/st9ZOhco/XbPDCemYsYhmrXZKIn3X4WecPm87NRfc7V4Chh6a8+w7g==
 
 commondir@^1.0.1:
   version "1.0.1"
